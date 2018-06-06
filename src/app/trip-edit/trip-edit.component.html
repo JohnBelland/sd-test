@@ -1,4 +1,11 @@
 <div style="text-align:left; background-color: beige; min-height: 800px; padding: 10px;">
   <h1>Trip Edit</h1>
+  <button (click)="saveForm()">Save Form</button>
   <app-leg-list [legList]="legList"></app-leg-list>
+  <div *ngIf="showSavedData">
+    <h3>Saved Data</h3> Saved Data
+    <div>
+      {{savedData}}
+    </div>
+  </div>
 </div>

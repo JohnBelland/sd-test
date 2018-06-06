@@ -1,6 +1,6 @@
 <div style="text-align:left; background-color: cornflowerblue; min-height: 600px; width: 380px; padding: 10px;">
   <h1>Leg</h1>
-  <app-leg-primary [legPrimary]="leg?.legPrimary"></app-leg-primary>
+  <app-leg-primary [legPrimary]="leg?.legPrimary" (onLegPrimaryUpdated)="legPrimaryUpdated($event)"></app-leg-primary>
   <br/>
   <app-leg-details [legDetails]="leg?.legDetails"></app-leg-details>
   <br/>

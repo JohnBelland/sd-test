@@ -1,13 +1,16 @@
-<div style="border: 1px black solid; height: 350px;">
+<div style="border: 1px black solid; height: 250px;">
   <h2>Leg Primary</h2>
   <div>
-    <form [formGroup]="legPrimaryFormGroup">
+    <form [formGroup]="legPrimaryFormGroup" (submit)="onSubmit()">
       Departure Flight: <input type="text" formControlName="departureFlight" (blur)="onChange()"><br/>
       Arrival Flight: <input type="text" formControlName="arrivalFlight"><br/>
       Departure Date Time: <input type="text" formControlName="departureDateTime"><br/>
       Arrival Date Time: <input type="text" formControlName="arrivalDateTime"><br/>
       Ete: <input type="text" formControlName="ete"><br/>
+      Stars: <rating-input formControlName="stars"></rating-input>
+      <button type="submit">Submit</button>
     </form>
+
     <br/>
     {{result}}
   </div>

@@ -11,6 +11,7 @@ import { LegDetailsComponent } from './trip-edit/leg-list/leg/leg-details/leg-de
 import { LegCrewComponent } from './trip-edit/leg-list/leg/leg-crew/leg-crew.component';
 import { LegPaxComponent } from './trip-edit/leg-list/leg/leg-pax/leg-pax.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {RatingInputComponent} from "./custom-form-controls/rating-input-component";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     LegPrimaryComponent,
     LegDetailsComponent,
     LegCrewComponent,
-    LegPaxComponent
+    LegPaxComponent,
+    RatingInputComponent
   ],
   imports: [
     BrowserModule,

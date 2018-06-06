@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TripService } from "../providers/trip.service";
-import {Trip} from "../models/trip";
-import {Leg} from "../models/leg";
+import { Leg } from "../models/leg";
 
 @Component({
   selector: 'app-trip-edit',
@@ -10,6 +9,8 @@ import {Leg} from "../models/leg";
 })
 export class TripEditComponent implements OnInit {
   legList: Leg[];
+  showSavedData = false;
+  savedData: string;
 
   constructor(private tripService: TripService) { }
 
@@ -17,4 +18,8 @@ export class TripEditComponent implements OnInit {
     this.tripService.getTrip().subscribe(res => { this.legList = res.legs; console.log(res.legs); }) ;
   }
 
+  saveForm() {
+    this.showSavedData = true;
+    this.savedData = JSON.stringify(this.legList);
+  }
 }

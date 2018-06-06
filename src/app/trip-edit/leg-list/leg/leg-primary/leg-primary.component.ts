@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {LegPrimary} from "../../../../models/leg-primary";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {TripService} from "../../../../providers/trip.service";
@@ -8,10 +8,10 @@ import {TripService} from "../../../../providers/trip.service";
   templateUrl: './leg-primary.component.html',
   styleUrls: ['./leg-primary.component.css']
 })
-export class LegPrimaryComponent implements OnInit {
+export class LegPrimaryComponent implements OnInit, OnChanges {
   @Input() legPrimary: LegPrimary;
+  @Output() onLegPrimaryUpdated = new EventEmitter<LegPrimary>();
   legPrimaryFormGroup: FormGroup;
-  result: string;
 
   constructor(private fb: FormBuilder, private tripService: TripService) { }
 
@@ -19,11 +19,15 @@ export class LegPrimaryComponent implements OnInit {
     this.bindLegPrimaryFormGroup();
 
     this.tripService.subscribeToLegPrimaryUpdates().subscribe(res => {
-      this.result = JSON.stringify(res);
-      this.legPrimary = res;
-      // this.bindLegPrimaryFormGroup();  //CAN BE CALLED TO UPDATE ENTIRE FORM
       this.upadateLegPrimaryFormGroup(res);
+      this.onLegPrimaryUpdated.emit(this.legPrimaryFormGroup.value);
     });
+
+    this.legPrimaryFormGroup.controls['ete'].valueChanges.subscribe(change => console.log('I CHANGED!'));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('On changes hit', changes);
   }
 
   bindLegPrimaryFormGroup() {
@@ -32,20 +36,28 @@ export class LegPrimaryComponent implements OnInit {
       arrivalFlight: this.legPrimary.arrivalFlight,
       departureDateTime: this.legPrimary.departureDateTime,
       arrivalDateTime: this.legPrimary.departureFlight,
-      ete: this.legPrimary.ete
+      ete: this.legPrimary.ete,
+      stars: 2
     });
   }
 
-  //NOTE WE CAN USE THIS TO UPDATE JUST A SUBSET OF THE FORM IF WE WANTED
   upadateLegPrimaryFormGroup(legPrimary: LegPrimary) {
+    //this.legPrimaryFormGroup.controls['ete'].setValue(legPrimary.ete, {onlySelf: true, emitEvent: false});
+
+    //this.legPrimaryFormGroup.controls['ete'].setValue(legPrimary.ete);
+
     this.legPrimaryFormGroup.patchValue({
       arrivalDateTime: legPrimary.departureFlight,
       ete: legPrimary.ete
-    });
+    }, { onlySelf: false, emitEvent: false });
+
   }
 
   onChange() {
-    console.log('On change hit');
     this.tripService.calculateLegPrimaryEte(this.legPrimaryFormGroup.value);
+  }
+
+  onSubmit() {
+    console.log(JSON.stringify(this.legPrimaryFormGroup.value));
   }
 }
